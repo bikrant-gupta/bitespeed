@@ -27,10 +27,10 @@ export class IdentificationService {
             where: [{ email }, { phoneNumber }],
         });
 
-        if (!allContacts || allContacts.length==0) {
+        if (!allContacts || allContacts.length == 0) {
             // no recoards with email and phone, so create new record
-            allContacts = [await this.createContact({email, phoneNumber})]
-        }else{
+            allContacts = [await this.createContact({ email, phoneNumber })]
+        } else {
             let emailContactPrimaryId = IdentificationUtil.getContactPrimaryId('email', email, allContacts);
             let phoneContactPrimaryId = IdentificationUtil.getContactPrimaryId('phoneNumber', phoneNumber, allContacts);
             let primaryId: number = null;
@@ -61,14 +61,12 @@ export class IdentificationService {
         return allContacts;
     }
 
-
     async findByIds(ids: number[]): Promise<Contact[]> {
         return await this.identificationRepository
-          .createQueryBuilder('contact')
-          .where('contact.id IN (:...ids)', { ids })
-          .getMany();
+            .createQueryBuilder('contact')
+            .where('contact.id IN (:...ids)', { ids })
+            .getMany();
     }
-    
 
     async mergeContactIds(contactId1: number, contactId2: number): Promise<number> {
         let contacts = await this.findByIds([contactId1, contactId2]);
