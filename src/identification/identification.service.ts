@@ -27,7 +27,7 @@ export class IdentificationService {
             where: [{ email }, { phoneNumber }],
         });
 
-        if (!allContacts) {
+        if (!allContacts || allContacts.length==0) {
             // no recoards with email and phone, so create new record
             allContacts = [await this.createContact({email, phoneNumber})]
         }else{

@@ -6,12 +6,17 @@ import { IdentificationService } from './identification/identification.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contact } from './identification/identification.entity';
 
+import * as dotenv from 'dotenv';
+import { join } from 'path';
+
+dotenv.config({ path: join(__dirname, '..', '.env') });
+
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'test.db',
-      entities: [Contact],
+      type: 'postgres',
+      url: process.env.DB_URL,
+      autoLoadEntities: true,
       synchronize: true
     }),
     TypeOrmModule.forFeature([Contact])
@@ -19,4 +24,9 @@ import { Contact } from './identification/identification.entity';
   controllers: [AppController, IdentificationController],
   providers: [AppService, IdentificationService],
 })
-export class AppModule {}
+export class AppModule {
+
+  constructor(){
+  }
+
+ }
